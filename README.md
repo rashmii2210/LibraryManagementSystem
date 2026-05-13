@@ -152,9 +152,3 @@ CREATE TABLE `book_demand` (
 5. Start Apache and MySQL from XAMPP / WAMP Control Panel
 6. Open `http://localhost/LibraryManagementSystem/dashboard.php`
 
-## 📅 Submitted
-
-**Branch:** Diploma in Computer Engineering  
-**Semester:** 4th  
-**Subject:** Introduction to Web Development (4340704)  
-**Submitted to:** Gujarat Technological University (GTU)
