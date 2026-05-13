@@ -1,0 +1,23 @@
+dashboard-total number of students,books,available books,issued books
+
+add student
+show records of student
+
+search book
+add new book
+
+issue book to student
+view issued book from student registration number
+
+return book from student
+check fine while returning a book
+
+renew book from student
+check fine while renewing a book (is he/she does not pay fine renewal process will not be done)
+
+demand a book 
+show demand books
+
+composer create-project laravel/laravel:^10.0 laravel-project
+
+
