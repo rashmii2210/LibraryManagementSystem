@@ -22,6 +22,7 @@ This project demonstrates a comprehensive library management system designed to 
 | 🎨 CSS | Styling & Layout |
 | 🅱️ Bootstrap | Responsive UI Components |
 | 🐘 PHP | Backend Programming |
+| 🗃️ JDBC | Database Connectivity |
 | 🐬 MySQL | Database Management |
 | 🚀 Apache | Web Server |
 
@@ -70,47 +71,75 @@ LibraryManagementSystem/
 
 ## 🗄️ Database Setup
 
-Run the following SQL to set up the database:
+> **Database Name:** `library`  
+> **Server:** MariaDB 10.4+ | **PHP Version:** 8.2+
+
+Import the provided `library.sql` file directly via phpMyAdmin, or run the following SQL manually:
 
 ```sql
-CREATE DATABASE library_management;
+CREATE DATABASE library;
 
-USE library_management;
+USE library;
 
-CREATE TABLE students (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    s_name VARCHAR(100) NOT NULL,
-    sfather_name VARCHAR(100),
-    s_surname VARCHAR(100),
-    s_address VARCHAR(255),
-    gender VARCHAR(10) NOT NULL,
-    s_email VARCHAR(100),
-    s_phoneno VARCHAR(15) NOT NULL,
-    s_birth_date DATE
+-- Students table
+CREATE TABLE `students` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `s_name` VARCHAR(255) DEFAULT NULL,
+  `sfather_name` VARCHAR(255) DEFAULT NULL,
+  `s_surname` VARCHAR(255) DEFAULT NULL,
+  `s_address` TEXT DEFAULT NULL,
+  `gender` ENUM('male','female') DEFAULT NULL,
+  `s_email` VARCHAR(255) DEFAULT NULL,
+  `s_phoneno` INT(10) NOT NULL,
+  `s_birth_date` DATE DEFAULT NULL,
+  `s_photo` VARCHAR(255) DEFAULT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP()
 );
 
-CREATE TABLE books (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    book_title VARCHAR(200) NOT NULL,
-    language VARCHAR(50),
-    author VARCHAR(100) NOT NULL,
-    publisher VARCHAR(100),
-    year YEAR,
-    pages INT,
-    location VARCHAR(100),
-    price DECIMAL(10,2),
-    isbn_no VARCHAR(20) UNIQUE,
-    keyword VARCHAR(200),
-    status TINYINT DEFAULT 1  -- 1 = available, 0 = issued
+-- Books table
+CREATE TABLE `books` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `date_of_entry` DATE DEFAULT NULL,
+  `book_title` VARCHAR(255) DEFAULT NULL,
+  `language` VARCHAR(255) DEFAULT NULL,
+  `author` VARCHAR(255) DEFAULT NULL,
+  `publisher` VARCHAR(255) DEFAULT NULL,
+  `year` DATE DEFAULT NULL,
+  `pages` BIGINT(20) DEFAULT NULL,
+  `location` VARCHAR(255) DEFAULT NULL,
+  `price` VARCHAR(255) DEFAULT NULL,
+  `isbn_no` VARCHAR(255) DEFAULT NULL,
+  `status` VARCHAR(255) DEFAULT NULL,  -- '1' = available, '0' = issued
+  `keyword` VARCHAR(255) DEFAULT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP()
 );
 
-CREATE TABLE book_issueds (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    student_id INT NOT NULL,
-    book_id INT NOT NULL,
-    book_name VARCHAR(200),
-    issued_date DATE NOT NULL,
-    due_date DATE NOT NULL
+-- Book issued records table
+CREATE TABLE `book_issueds` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `student_id` INT(11) DEFAULT NULL,
+  `book_id` INT(11) DEFAULT NULL,
+  `book_name` VARCHAR(255) DEFAULT NULL,
+  `issued_date` DATE DEFAULT NULL,
+  `due_date` DATE DEFAULT NULL,
+  `return_date` DATE DEFAULT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
+  FOREIGN KEY (`student_id`) REFERENCES `students`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`book_id`) REFERENCES `books`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- Book demand table
+CREATE TABLE `book_demand` (
+  `demand_id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `student_id` INT(11) DEFAULT NULL,
+  `book_title` VARCHAR(255) NOT NULL,
+  `author` VARCHAR(255) NOT NULL,
+  `publisher` VARCHAR(255) NOT NULL,
+  `demand_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  FOREIGN KEY (`student_id`) REFERENCES `students`(`id`)
 );
 ```
 
